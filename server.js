@@ -164,7 +164,7 @@ app.post("/loginT", function(req, res){
             }
             else{
                 if (foundTutor){
-                    if (foundTutor.password == md5(password)){
+                    if (foundTutor.password == password){
                         req.session.user = foundTutor
                         res.redirect("/tutor")
                     }
