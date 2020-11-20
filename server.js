@@ -112,7 +112,6 @@ app.get("/tutor",function(req,res){
             }
             else{
                 console.log("FoundTutor Obj after redirect: ");
-                console.log(foundTutor);
                 res.render("tutor", {tutorObj: foundTutor, message: req.flash('message')})
             }
         })
@@ -346,7 +345,6 @@ app.post('/schedule', function(req, res) {
     console.log(subject);
     const time = req.body.time
     const newDate=date.slice(0,4)+"/"+date.slice(5,7)+"/"+date.slice(8,10)
-    console.log(newDate)
     const dayofWeek= new Date(newDate).getDay()
     const days=["sunday","monday","tuesday","wednesday","thursday","friday", "saturday"]
     if (parseInt(time.slice(3,5)) % 5 != 0){
@@ -362,15 +360,9 @@ app.post('/schedule', function(req, res) {
             var found = false;
             for (var i = 0; i < tutors.length; i++) {
                 for (var j = 0; j < tutors[i][days[dayofWeek]].length;j=j+3){
-                    console.log("from database: ");
-                    console.log(tutors[i].subject)
-                    console.log(parseInt(time.slice(0,2))==parseInt(tutors[i][days[dayofWeek]][j].slice(0,2)))
-                    console.log(parseInt(time.slice(3,5))==parseInt(tutors[i][days[dayofWeek]][j].slice(3,5)))
                     if (parseInt(time.slice(0,2))==parseInt(tutors[i][days[dayofWeek]][j].slice(0,2)) 
                     && parseInt(time.slice(3,5))==parseInt(tutors[i][days[dayofWeek]][j].slice(3,5)) 
                     && subject == tutors[i].subject && tutors[i][days[dayofWeek]][j+2] != true) {
-                        console.log("from database: ");
-                        console.log(tutors[i].subject)
                         tutors[i].apptDates.push(newDate)
                         tutors[i].apptTimes.push(time)
                         tutors[i][days[dayofWeek]][j+2] = true
@@ -406,9 +398,6 @@ app.post('/schedule', function(req, res) {
         
                             }
                         })
-
-
-
                         res.redirect("/student")
                     }
                 }
@@ -428,38 +417,29 @@ app.post('/schedule', function(req, res) {
 app.post("/addAvail", function(req,res) {
     var day = req.body.days
     day = day.toLowerCase()
-    console.log(day);   
     const startTime = req.body.startTime
     const endTime = req.body.endTime
-    console.log(parseInt(startTime.slice(3,5)))
-    console.log(parseInt(endTime.slice(3,5)))
-
-    console.log(parseInt(startTime.slice(3,5)) % 5 != 0)
     //6:55 - 7:56
     //GOTTA FIX THIS
     if (parseInt(startTime.slice(3,5)) % 5 != 0 || parseInt(endTime.slice(3,5)) % 5 != 0){ //if start min is not interval of 5
         if ( (parseInt(startTime.slice(0,2))+1 != parseInt(endTime.slice(0,2))) 
         && (parseInt(startTime.slice(3,5)) != parseInt(endTime.slice(3,5)))){ // if its not 1 hr
             req.flash('message', 'Minutes is not in an interval of 5 and it is not one hour')
-            console.log("here1")
             res.redirect('/tutor')
             
         }
         else{
             req.flash('message', 'Minutes is not in an interval of 5')
-            console.log("here2")
             res.redirect('/tutor')
         }
     }          //7                                      7                                      
     else if( (parseInt(startTime.slice(0,2))+1 != parseInt(endTime.slice(0,2))) && (parseInt(startTime.slice(3,5)) != parseInt(endTime.slice(3,5))) ){ //if its not 1 hr
         if ( parseInt(startTime.slice(3,5)) % 5 != 0){ // if start min is not interval of 5
             req.flash('message', "Minutes is not an interval of 5 and it is not one hour")
-            console.log("here3")
             res.redirect('/tutor')
         }
         else {
             req.flash('message', 'Not one hour')
-            console.log("here4")
             res.redirect('/tutor')
         }  
         
@@ -468,12 +448,10 @@ app.post("/addAvail", function(req,res) {
     else if((parseInt(startTime.slice(3,5)) != parseInt(endTime.slice(3,5))) ){
         if((parseInt(startTime.slice(3,5)) % 5 != 0 || parseInt(endTime.slice(3,5)) % 5 != 0) && (parseInt(startTime.slice(0,2))+1 != parseInt(endTime.slice(0,2)))){
             req.flash('message',"Minutes is not an interval of 5 and it is not one hour")
-            console.log("here5")
             res.redirect('/tutor')
         }
         else{
             req.flash('message', 'Not an hour')
-            console.log("here6")
             res.redirect('/tutor')
         }
     }
@@ -488,7 +466,6 @@ app.post("/addAvail", function(req,res) {
                 for (var i = 0; i < foundTutor[day].length; i=i+3){
                     if ( parseInt(foundTutor[day][i].slice(0,2)) == parseInt(startTime.slice(0,2)) ) { // if hour is equal
                             failed = true
-                            console.log("hey");
                             req.flash('message', "Already occupied!")
                             res.redirect('/tutor')
                         }
@@ -518,10 +495,8 @@ app.get("/logout", function(req, res) {
     
 })
 
-
-
-app.listen(3000|| process.env.PORT, function(){
-   console.log(`Server port 3000 is running`) 
+app.listen(process.env.PORT, function(){
+   console.log(`Server port ${process.env.PORT} is running`) 
 //    Tutor.findOne({email: "tutorfm@gmail"}, function(err, foundTutor){
 //     if (err){
 //         console.log(err);
