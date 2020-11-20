@@ -520,8 +520,10 @@ app.get("/logout", function(req, res) {
     
 })
 
+const PORT = 8080 || process.env.port
+
 app.listen(process.env.Port, function(){
-   console.log("Server port 8080 is running") 
+   console.log(`Server port ${PORT} is running`) 
 //    Tutor.findOne({email: "tutorfm@gmail"}, function(err, foundTutor){
 //     if (err){
 //         console.log(err);
