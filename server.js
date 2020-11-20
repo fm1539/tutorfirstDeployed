@@ -373,8 +373,6 @@ app.post('/schedule', function(req, res) {
                         console.log(tutors[i].subject)
                         tutors[i].apptDates.push(newDate)
                         tutors[i].apptTimes.push(time)
-                        var militaryToTwelve = convert_military_to_twelve(time)
-                        console.log(militaryToTwelve)
                         tutors[i][days[dayofWeek]][j+2] = true
                         tutors[i].students.push(req.session.user.fName + " " +req.session.user.lName)
                         id = tutors[i]
@@ -520,10 +518,10 @@ app.get("/logout", function(req, res) {
     
 })
 
-const port = process.env.PORT
 
-app.listen(port, function(){
-   console.log(`Server port ${port} is running`) 
+
+app.listen(3000|| process.env.PORT, function(){
+   console.log(`Server port 3000 is running`) 
 //    Tutor.findOne({email: "tutorfm@gmail"}, function(err, foundTutor){
 //     if (err){
 //         console.log(err);
