@@ -2,12 +2,15 @@
   "name": "tutorfirstdeployed",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "node server.js"
   },
   "author": "farhan mashud isfar oshir mohammed s. uddin",
   "license": "ISC",
+  "engines": {
+    "node": "12.18.3"
+  },
   "dependencies": {
     "body-parser": "^1.19.0",
     "client-sessions": "^0.8.0",
