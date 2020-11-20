@@ -520,7 +520,7 @@ app.get("/logout", function(req, res) {
     
 })
 
-app.listen(3000,function(){
+app.listen(3000 || process.env.Port,function(){
    console.log("Server port 3000 is running") 
 //    Tutor.findOne({email: "tutorfm@gmail"}, function(err, foundTutor){
 //     if (err){
