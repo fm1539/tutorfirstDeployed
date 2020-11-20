@@ -124,7 +124,7 @@ app.get("/tutor",function(req,res){
 })
 
 app.post("/loginS", function(req, res) {
-        const pass = req.body.studentPass
+        const pass = md5(req.body.studentPass)
         const email = req.body.studentEmail
         Student.findOne({email: email}, function(err, foundStudent) {
             if (err) {
@@ -156,7 +156,7 @@ app.post("/loginS", function(req, res) {
 app.post("/loginT", function(req, res){
     
         const email = req.body.tutorEmail
-        const password = req.body.tutorPass
+        const password = md5(req.body.tutorPass)
     
         Tutor.findOne({email: email}, function(err, foundTutor){
             if (err){
@@ -164,7 +164,7 @@ app.post("/loginT", function(req, res){
             }
             else{
                 if (foundTutor){
-                    if (foundTutor.password == password){
+                    if (foundTutor.password == md5(password)){
                         req.session.user = foundTutor
                         res.redirect("/tutor")
                     }
@@ -185,7 +185,7 @@ app.post("/registerS",function(req,res){
         const newEmail= req.body.studentEmail
         const firstName= req.body.studentFirst
         const lastName = req.body.studentLast
-        const pass = req.body.studentPass
+        const pass = md5(req.body.studentPass)
         const fam = req.body.fam
         const income = req.body.income
         const famToIncome = {
@@ -237,7 +237,7 @@ app.post("/registerT",function(req,res){
         const newEmail = req.body.tutorEmail
         const firstName = req.body.tutorFirst
         const lastName = req.body.tutorLast
-        const pass = req.body.tutorPass
+        const pass = md5(req.body.tutorPass)
         Tutor.findOne({email: newEmail}, function(err, foundTutor){
             if (err){
                 console.log(err);
@@ -286,17 +286,13 @@ app.get("/delete", function(req, res){
     if (req.session.user.accountType == "Tutor") {
         const day = req.query.DAY
         const index = req.query.INDEX
-        console.log(day);
-        console.log(index);
         // Implement Delete
         Tutor.findOne({email: req.session.user.email}, function(err, foundTutor) {
             if (err){
                 console.log(err);
             }
             else {
-                console.log(foundTutor[day]);
                 foundTutor[day].splice(index, 2)
-                console.log(foundTutor[day]);
                 foundTutor.save()
                 res.redirect("/tutor")           
             }
